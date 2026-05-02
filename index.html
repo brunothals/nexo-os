@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#050810">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="NEXO">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>NEXO 2.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Cabinet+Grotesk:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div id="app">
+
+    <!-- SIDEBAR NAV -->
+    <nav class="sidebar">
+      <div class="logo">
+        <span class="logo-mark">N</span>
+        <span class="logo-text">NEXO</span>
+        <span class="logo-ver">2.0</span>
+      </div>
+      <div class="nav-links">
+        <button class="nav-btn active" data-view="hoje">
+          <span class="nav-icon">◈</span>
+          <span>Hoje</span>
+        </button>
+        <button class="nav-btn" data-view="padroes">
+          <span class="nav-icon">◎</span>
+          <span>Padrões</span>
+        </button>
+        <button class="nav-btn" data-view="memoria">
+          <span class="nav-icon">◇</span>
+          <span>Memória</span>
+        </button>
+        <button class="nav-btn" data-view="config">
+          <span class="nav-icon">◻</span>
+          <span>Config</span>
+        </button>
+      </div>
+      <div class="sidebar-footer">
+        <div class="streak-display">
+          <span class="streak-num" id="sidebarStreak">0</span>
+          <span class="streak-label">dias seguidos</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+      <!-- ══════════ VIEW: HOJE ══════════ -->
+      <div class="view active" id="view-hoje">
+
+        <div class="view-header">
+          <div>
+            <p class="eyebrow" id="todayDate">—</p>
+            <h1>Sistema do dia</h1>
+          </div>
+          <div class="header-right">
+            <div class="score-wrap">
+              <svg class="score-svg" viewBox="0 0 60 60">
+                <circle class="score-bg" cx="30" cy="30" r="26"/>
+                <circle class="score-fill" id="scoreFill" cx="30" cy="30" r="26"
+                  stroke-dasharray="163.4" stroke-dashoffset="163.4"/>
+              </svg>
+              <div class="score-inner">
+                <span id="scoreNum">0</span>
+                <small>%</small>
+              </div>
+            </div>
+            <button class="reset-day-btn" id="resetDayBtn" title="Reiniciar dia">↺</button>
+          </div>
+        </div>
+
+        <!-- CHECK-IN RÁPIDO -->
+        <section class="card checkin-card">
+          <div class="card-label">CHECK-IN MATINAL</div>
+          <div class="checkin-grid">
+            <div class="slider-block">
+              <div class="slider-header">
+                <span>Energia</span>
+                <span class="slider-val" id="energyVal">5</span>
+              </div>
+              <input type="range" id="energySlider" min="1" max="10" value="5" step="1">
+              <div class="slider-ticks">
+                <span>baixa</span><span>alta</span>
+              </div>
+            </div>
+            <div class="slider-block">
+              <div class="slider-header">
+                <span>Foco</span>
+                <span class="slider-val" id="focusVal">5</span>
+              </div>
+              <input type="range" id="focusSlider" min="1" max="10" value="5" step="1">
+              <div class="slider-ticks">
+                <span>disperso</span><span>afiado</span>
+              </div>
+            </div>
+            <div class="slider-block">
+              <div class="slider-header">
+                <span>Humor</span>
+                <span class="slider-val" id="moodVal">5</span>
+              </div>
+              <input type="range" id="moodSlider" min="1" max="10" value="5" step="1">
+              <div class="slider-ticks">
+                <span>pesado</span><span>leve</span>
+              </div>
+            </div>
+          </div>
+          <div class="checkin-row2">
+            <select id="riskSelect" class="select-field">
+              <option value="nenhum">Risco do dia...</option>
+              <option value="alimentacao">🍔 Alimentação</option>
+              <option value="impulsos">⚡ Impulsos</option>
+              <option value="gastos">💸 Gastos</option>
+              <option value="procrastinacao">🌀 Procrastinação</option>
+              <option value="sono">😴 Sono</option>
+              <option value="treino">🏋️ Treino</option>
+            </select>
+            <input type="text" id="focusText" class="input-field" placeholder="Foco principal de hoje...">
+          </div>
+          <button class="btn-primary" id="saveCheckinBtn">Registrar check-in</button>
+        </section>
+
+        <!-- ALERTA PREDITIVO -->
+        <section class="card alert-card" id="alertCard" style="display:none">
+          <div class="card-label">NEXO PREVÊ</div>
+          <div class="alert-content" id="alertContent"></div>
+        </section>
+
+        <!-- DESPEJO MENTAL -->
+        <section class="card dump-card">
+          <div class="card-label">DESPEJO MENTAL</div>
+          <div class="dump-input-wrap">
+            <textarea id="dumpTextarea" placeholder="Despeje aqui — ideias, tarefas, impulsos, ansiedade, planos, qualquer coisa..."></textarea>
+            <button class="mic-btn" id="micBtn">🎙</button>
+          </div>
+          <div class="dump-actions">
+            <button class="btn-action" id="btnPlan">→ Plano</button>
+            <button class="btn-action secondary" id="btnRisk">⚠ Risco</button>
+            <button class="btn-action secondary" id="btnMemory">◉ Memória</button>
+            <button class="btn-action secondary" id="btnReflect">✦ Reflexão</button>
+          </div>
+          <div class="ai-status-bar" id="aiStatus" style="display:none">
+            <div class="ai-status-dot" id="aiDot"></div>
+            <span id="aiStatusText">processando...</span>
+          </div>
+          <div class="ai-response" id="aiResponse" style="display:none">
+            <div class="ai-response-label" id="aiResponseLabel">NEXO</div>
+            <div class="ai-response-text" id="aiResponseText"></div>
+            <button class="btn-save-memory" id="btnSaveToMemory" style="display:none">+ Salvar na memória</button>
+          </div>
+        </section>
+
+        <!-- INSIGHTS DO DIA -->
+        <section class="card insights-card">
+          <div class="card-label">LEITURA DO DIA</div>
+          <div class="insights-grid" id="insightsGrid"></div>
+        </section>
+
+      </div>
+
+      <!-- ══════════ VIEW: PADRÕES ══════════ -->
+      <div class="view" id="view-padroes">
+
+        <div class="view-header">
+          <div>
+            <p class="eyebrow">Últimos 30 dias</p>
+            <h1>Seus padrões</h1>
+          </div>
+        </div>
+
+        <section class="card">
+          <div class="card-label">ENERGIA, FOCO E HUMOR — LINHA DO TEMPO</div>
+          <div class="chart-wrap">
+            <canvas id="lineChart" height="180"></canvas>
+          </div>
+          <div class="chart-legend">
+            <span class="legend-dot" style="background:#00e5ff"></span><span>Energia</span>
+            <span class="legend-dot" style="background:#b388ff"></span><span>Foco</span>
+            <span class="legend-dot" style="background:#69ff47"></span><span>Humor</span>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-label">HEATMAP DE RISCO — DIA DA SEMANA</div>
+          <div id="heatmapWrap"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-label">PADRÕES DETECTADOS</div>
+          <div id="patternsGrid" class="patterns-grid"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-label">MÉDIAS DOS ÚLTIMOS 7 DIAS</div>
+          <div class="averages-grid" id="averagesGrid"></div>
+        </section>
+
+      </div>
+
+      <!-- ══════════ VIEW: MEMÓRIA ══════════ -->
+      <div class="view" id="view-memoria">
+
+        <div class="view-header">
+          <div>
+            <p class="eyebrow">Contexto histórico</p>
+            <h1>Memória viva</h1>
+          </div>
+          <button class="btn-export" id="exportObsidian">↗ Obsidian</button>
+        </div>
+
+        <section class="card">
+          <div class="card-label">APRENDIZADOS CONSOLIDADOS</div>
+          <p class="helper-text">Tudo aqui é usado como contexto pela IA em cada análise. Edite livremente.</p>
+          <textarea class="memory-textarea" id="memoryTextarea" placeholder="• Tenho padrão de gasto impulsivo às sextas&#10;• Energia cai depois das 15h&#10;• Treino em jejum funciona melhor para mim&#10;• Procrastino mais quando o risco é alimentação"></textarea>
+          <button class="btn-primary" id="saveMemoryBtn" style="margin-top:12px">Salvar memória</button>
+        </section>
+
+        <section class="card">
+          <div class="card-label">HISTÓRICO DE CHECK-INS</div>
+          <div id="historyList" class="history-list"></div>
+        </section>
+
+      </div>
+
+      <!-- ══════════ VIEW: CONFIG ══════════ -->
+      <div class="view" id="view-config">
+
+        <div class="view-header">
+          <div>
+            <p class="eyebrow">Preferências</p>
+            <h1>Configurações</h1>
+          </div>
+        </div>
+
+        <section class="card">
+          <div class="card-label">IDENTIDADE</div>
+          <label class="field-label">Seu nome (para personalização)</label>
+          <input type="text" id="userName" class="input-field" placeholder="Como quer ser chamado?">
+        </section>
+
+        <section class="card">
+          <div class="card-label">OBSIDIAN VAULT</div>
+          <label class="field-label">Nome exato do Vault</label>
+          <input type="text" id="vaultNameInput" class="input-field" placeholder="MeuVault">
+          <label class="field-label" style="margin-top:12px">Pasta dentro do Vault</label>
+          <input type="text" id="vaultFolder" class="input-field" placeholder="Nexo">
+        </section>
+
+        <section class="card">
+          <div class="card-label">DADOS</div>
+          <div class="config-actions">
+            <button class="btn-action secondary" id="exportJsonBtn">↓ Exportar JSON</button>
+            <button class="btn-danger" id="nukeBtn">⚠ Apagar tudo</button>
+          </div>
+          <p class="helper-text" style="margin-top:10px">O export JSON salva todo seu histórico para backup ou importação futura.</p>
+        </section>
+
+        <section class="card">
+          <div class="card-label">SOBRE O NEXO 2.0</div>
+          <p class="helper-text" style="line-height:1.8">
+            Sistema operacional pessoal. Roda 100% local no seu navegador.<br>
+            IA usada apenas quando você solicita uma análise.<br>
+            Dados armazenados no localStorage do seu dispositivo.<br>
+            Exportação para Obsidian em markdown.<br>
+            <br>
+            Custo estimado de IA: &lt; R$3/mês com uso diário.
+          </p>
+        </section>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- CONFIRM DIALOG -->
+  <div class="overlay" id="overlay" style="display:none">
+    <div class="dialog">
+      <h3 id="dialogTitle">Confirmar</h3>
+      <p id="dialogMsg"></p>
+      <div class="dialog-btns">
+        <button class="btn-action secondary" id="dialogCancel">Cancelar</button>
+        <button class="btn-danger" id="dialogConfirm">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <script src="app.js" defer></script>
+</body>
+</html>
