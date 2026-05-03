@@ -37,6 +37,18 @@
           <span class="nav-icon">◇</span>
           <span>Memória</span>
         </button>
+        <button class="nav-btn" data-view="corpo">
+          <span class="nav-icon">◈</span>
+          <span>Corpo</span>
+        </button>
+        <button class="nav-btn" data-view="financas">
+          <span class="nav-icon">◎</span>
+          <span>Finanças</span>
+        </button>
+        <button class="nav-btn" data-view="mente">
+          <span class="nav-icon">◇</span>
+          <span>Mente</span>
+        </button>
         <button class="nav-btn" data-view="config">
           <span class="nav-icon">◻</span>
           <span>Config</span>
@@ -229,6 +241,268 @@
 
       </div>
 
+
+      <!-- ══════════ VIEW: CORPO ══════════ -->
+      <div class="view" id="view-corpo">
+        <div class="view-header">
+          <div>
+            <p class="eyebrow">Plano Thales · Ganho de Massa</p>
+            <h1>Corpo</h1>
+          </div>
+          <div class="corpo-stats">
+            <span class="corpo-stat"><span class="cs-val">67<small>kg</small></span><span class="cs-label">atual</span></span>
+            <span class="corpo-stat"><span class="cs-val">~75<small>kg</small></span><span class="cs-label">meta</span></span>
+          </div>
+        </div>
+        <div class="corpo-alert">⚠ Peito de pombo + lombar sensível — sem deadlift pesado. Pilates toda quinta.</div>
+        <div class="corpo-tabs">
+          <button class="corpo-tab active" data-tab="treino">Treino</button>
+          <button class="corpo-tab" data-tab="nutricao">Nutrição</button>
+          <button class="corpo-tab" data-tab="principios">Princípios</button>
+        </div>
+        <div class="corpo-panel active" id="tab-treino">
+          <div class="card">
+            <div class="card-label">SEMANA ATUAL — DIAS TREINADOS</div>
+            <div class="week-progress" id="weekProgress"></div>
+          </div>
+          <div id="trainDays"></div>
+        </div>
+        <div class="corpo-panel" id="tab-nutricao">
+          <div class="card">
+            <div class="card-label">META CALÓRICA DIÁRIA</div>
+            <div class="kcal-banner">
+              <div class="kcal-num">3.200<span>kcal</span></div>
+              <div class="kcal-desc">Ectomorfo com metabolismo rápido. Coma mesmo sem fome.<br>Sem ganho em 2 semanas → sobe para 3.500 kcal.</div>
+            </div>
+            <div class="macro-bars">
+              <div class="macro-row"><div class="macro-info"><span>Proteína</span><span class="macro-val" style="color:var(--cyan)">160–180g · 25%</span></div><div class="macro-track"><div class="macro-fill" style="width:25%;background:var(--cyan)"></div></div></div>
+              <div class="macro-row"><div class="macro-info"><span>Carboidrato</span><span class="macro-val" style="color:var(--violet)">420–460g · 55%</span></div><div class="macro-track"><div class="macro-fill" style="width:55%;background:var(--violet)"></div></div></div>
+              <div class="macro-row"><div class="macro-info"><span>Gordura</span><span class="macro-val" style="color:var(--amber)">70–80g · 20%</span></div><div class="macro-track"><div class="macro-fill" style="width:20%;background:var(--amber)"></div></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-label">REFEIÇÕES DO DIA — MARQUE O QUE FEZ</div>
+            <div id="mealsList"></div>
+          </div>
+        </div>
+        <div class="corpo-panel" id="tab-principios">
+          <div class="card">
+            <div class="card-label">6 PRINCÍPIOS DO ECTOMORFO</div>
+            <div id="principlesList"></div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ══════════ VIEW: FINANÇAS ══════════ -->
+      <div class="view" id="view-financas">
+        <div class="view-header">
+          <div>
+            <p class="eyebrow">Controle financeiro</p>
+            <h1>Finanças</h1>
+          </div>
+          <button class="btn-action secondary" id="btnFinConfig">⚙ Configurar</button>
+        </div>
+
+        <!-- SALDO PRINCIPAL -->
+        <div class="fin-hero">
+          <div class="fin-hero-label">Você ainda pode gastar</div>
+          <div class="fin-hero-value" id="finHeroValue">R$ 0</div>
+          <div class="fin-hero-sub" id="finHeroSub">do limite de R$ 0 este mês</div>
+          <div class="fin-progress-wrap">
+            <div class="fin-progress-bar">
+              <div class="fin-progress-fill" id="finProgressFill"></div>
+            </div>
+            <div class="fin-progress-labels">
+              <span id="finProgressUsed">0% usado</span>
+              <span id="finProgressLeft">R$ 276/dia disponível</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RESUMO -->
+        <div class="fin-summary">
+          <div class="fin-summary-item">
+            <div class="fsi-bar" style="background:var(--green)"></div>
+            <div>
+              <div class="fsi-label">Receitas</div>
+              <div class="fsi-value" id="finReceitas">R$ 0</div>
+            </div>
+          </div>
+          <div class="fin-summary-item">
+            <div class="fsi-bar" style="background:var(--coral)"></div>
+            <div>
+              <div class="fsi-label">Despesas</div>
+              <div class="fsi-value" id="finDespesas">R$ 0</div>
+            </div>
+          </div>
+          <div class="fin-summary-item">
+            <div class="fsi-bar" style="background:var(--cyan)"></div>
+            <div>
+              <div class="fsi-label">Resultado</div>
+              <div class="fsi-value" id="finResultado">R$ 0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LANÇAMENTO RÁPIDO -->
+        <div class="card">
+          <div class="card-label">LANÇAMENTO RÁPIDO</div>
+          <div class="fin-launch-form">
+            <input type="text" class="input-field" id="finDesc" placeholder="Descrição...">
+            <input type="number" class="input-field" id="finValue" placeholder="R$ 0,00" step="0.01">
+            <select class="select-field" id="finCat">
+              <option value="">Categoria...</option>
+            </select>
+            <div class="fin-launch-btns">
+              <button class="btn-action" id="btnAddReceita" style="color:var(--green);border-color:rgba(105,255,71,0.3)">+ Receita</button>
+              <button class="btn-action" id="btnAddDespesa" style="color:var(--coral);border-color:rgba(255,107,87,0.3)">− Despesa</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTAS A PAGAR -->
+        <div class="card">
+          <div class="card-label">CONTAS A PAGAR</div>
+          <div id="finContasList" class="fin-contas-list"></div>
+          <button class="btn-action secondary" id="btnAddConta" style="margin-top:12px;width:100%">+ Adicionar conta</button>
+        </div>
+
+        <!-- LIMITES POR CATEGORIA -->
+        <div class="card">
+          <div class="card-label">LIMITES POR CATEGORIA</div>
+          <div id="finCategoriasList" class="fin-categorias-list"></div>
+        </div>
+
+        <!-- HISTÓRICO -->
+        <div class="card">
+          <div class="card-label">HISTÓRICO DO MÊS</div>
+          <div id="finHistorico" class="fin-historico"></div>
+        </div>
+      </div>
+
+      <!-- MODAL FINANÇAS CONFIG -->
+      <div class="fin-modal" id="finModal" style="display:none">
+        <div class="fin-modal-box">
+          <div class="fin-modal-head">
+            <h3>Configurar Finanças</h3>
+            <button class="fin-modal-close" id="finModalClose">✕</button>
+          </div>
+          <div class="fin-modal-body">
+            <label class="field-label">Limite mensal (R$)</label>
+            <input type="number" class="input-field" id="finLimiteInput" placeholder="8000">
+
+            <label class="field-label" style="margin-top:16px">Categorias e limites</label>
+            <div id="finCategoriasConfig"></div>
+            <button class="btn-action secondary" id="btnAddCategoria" style="margin-top:10px;width:100%">+ Nova categoria</button>
+
+            <label class="field-label" style="margin-top:16px">Contas a pagar</label>
+            <div id="finContasConfig"></div>
+            <button class="btn-action secondary" id="btnAddContaConfig" style="margin-top:10px;width:100%">+ Nova conta</button>
+
+            <button class="btn-primary" id="finSaveConfig" style="margin-top:20px">Salvar configurações</button>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ══════════ VIEW: MENTE ══════════ -->
+      <div class="view" id="view-mente">
+        <div class="view-header">
+          <div>
+            <p class="eyebrow">Segundo Cérebro · Zettelkasten</p>
+            <h1>Mente</h1>
+          </div>
+          <button class="btn-export" id="btnExportMente">↗ Obsidian</button>
+        </div>
+
+        <!-- FLUXO -->
+        <div class="mente-flow">
+          <div class="mf-step active" data-step="rough">
+            <span class="mf-num">1</span>
+            <span class="mf-label">Rough</span>
+          </div>
+          <div class="mf-arrow">→</div>
+          <div class="mf-step" data-step="source">
+            <span class="mf-num">2</span>
+            <span class="mf-label">Source</span>
+          </div>
+          <div class="mf-arrow">→</div>
+          <div class="mf-step" data-step="full">
+            <span class="mf-num">3</span>
+            <span class="mf-label">Full Note</span>
+          </div>
+        </div>
+
+        <!-- PAINEL ROUGH -->
+        <div class="mente-panel active" id="mpanel-rough">
+          <div class="card">
+            <div class="card-label">ROUGH NOTE — DESPEJO BRUTO</div>
+            <p class="helper-text" style="margin-bottom:10px">Capture sem filtro. A mente é um processador, não um disco rígido.</p>
+            <textarea class="mente-textarea" id="roughTextarea" placeholder="Escreva qualquer coisa — ideia solta, trecho lido, insight, pergunta..."></textarea>
+            <div class="mente-actions">
+              <button class="btn-action" id="btnRefinaIA">✦ Refinar com IA</button>
+              <button class="btn-action secondary" id="btnSalvaRough">Salvar Rough</button>
+            </div>
+            <div class="ai-response" id="roughAiResponse" style="display:none">
+              <div class="ai-response-label">NEXO REFINOU</div>
+              <div class="ai-response-text" id="roughAiText"></div>
+              <button class="btn-save-memory" id="btnRoughToFull">→ Mover para Full Note</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-label">ROUGH NOTES SALVAS</div>
+            <div id="roughList" class="mente-list"></div>
+          </div>
+        </div>
+
+        <!-- PAINEL SOURCE -->
+        <div class="mente-panel" id="mpanel-source">
+          <div class="card">
+            <div class="card-label">SOURCE MATERIAL — FONTES BRUTAS</div>
+            <p class="helper-text" style="margin-bottom:10px">Cole links, trechos, PDFs, referências. Dados brutos intactos.</p>
+            <input type="text" class="input-field" id="sourceTitle" placeholder="Título da fonte..." style="margin-bottom:8px">
+            <textarea class="mente-textarea" id="sourceTextarea" placeholder="Cole o conteúdo bruto aqui — trecho de artigo, link, código..."></textarea>
+            <input type="text" class="input-field" id="sourceUrl" placeholder="URL / referência (opcional)" style="margin-top:8px">
+            <div class="mente-actions">
+              <button class="btn-action" id="btnSalvaSource">Salvar Source</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-label">SOURCE MATERIAL SALVO</div>
+            <div id="sourceList" class="mente-list"></div>
+          </div>
+        </div>
+
+        <!-- PAINEL FULL NOTE -->
+        <div class="mente-panel" id="mpanel-full">
+          <div class="card">
+            <div class="card-label">FULL NOTE — CONHECIMENTO CRISTALIZADO</div>
+            <p class="helper-text" style="margin-bottom:10px">Escreva com suas próprias palavras. Uma ideia por nota. Simples o suficiente para um leigo entender.</p>
+            <input type="text" class="input-field" id="fullTitle" placeholder="Título da nota..." style="margin-bottom:8px">
+            <select class="select-field" id="fullStatus" style="margin-bottom:8px">
+              <option value="draft">Draft</option>
+              <option value="developing">Developing</option>
+              <option value="developed">Developed</option>
+            </select>
+            <textarea class="mente-textarea tall" id="fullTextarea" placeholder="Escreva nas suas próprias palavras. Máximo uma tela. Um raciocínio singular e completo."></textarea>
+            <div class="tags-wrap">
+              <input type="text" class="input-field" id="tagsInput" placeholder="Tags (vírgula para separar)..." style="margin-bottom:8px">
+              <button class="btn-action secondary" id="btnSuggestTags">✦ Sugerir tags com IA</button>
+            </div>
+            <div id="tagsSuggested" style="display:none;margin:8px 0"></div>
+            <div class="mente-actions">
+              <button class="btn-action" id="btnSalvaFull">Salvar Full Note</button>
+              <button class="btn-action secondary" id="btnExportFull">↗ Exportar Obsidian</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-label">FULL NOTES SALVAS</div>
+            <div id="fullList" class="mente-list"></div>
+          </div>
+        </div>
+      </div>
+
       <!-- ══════════ VIEW: CONFIG ══════════ -->
       <div class="view" id="view-config">
 
@@ -293,5 +567,8 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
   <script src="app.js" defer></script>
+  <script src="corpo.js" defer></script>
+  <script src="financas.js" defer></script>
+  <script src="mente.js" defer></script>
 </body>
 </html>
