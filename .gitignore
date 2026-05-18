@@ -1,0 +1,7 @@
+.env
+.env.*
+!.env.example
+node_modules/
+obsidian-memory/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#050810">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="NEXO">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.json">
+  <title>NEXO 2.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Cabinet+Grotesk:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div id="app">
+
+    <!-- SIDEBAR NAV -->
+    <nav class="sidebar">
+      <div class="logo">
+        <span class="logo-mark">N</span>
+        <span class="logo-text">NEXO</span>
+        <span class="logo-ver">2.0</span>
+      </div>
+      <div class="nav-links">
+        <button class="nav-btn active" data-view="hoje">
+          <span class="nav-icon">◈</span>
+          <span>Hoje</span>
+        </button>
+        <button class="nav-btn" data-view="padroes">
+          <span class="nav-icon">◎</span>
+          <span>Padrões</span>
+        </button>
+        <button class="nav-btn" data-view="memoria">
+          <span class="nav-icon">◇</span>
+          <span>Memória</span>
+        </button>
+        <button class="nav-btn" data-view="corpo">
+          <span class="nav-icon">◈</span>
+          <span>Corpo</span>
+        </button>
+        <button class="nav-btn" data-view="financas">
+          <span class="nav-icon">◎</span>
+          <span>Finanças</span>
+        </button>
+        <button class="nav-btn" data-view="mente">
+          <span class="nav-icon">◇</span>
+          <span>Mente</span>
+        </button>
+        <button class="nav-btn" data-view="investimentos">
+          <span class="nav-icon">◈</span>
+          <span>Invest</span>
+        </button>
+        <button class="nav-btn" data-view="config">
+          <span class="nav-icon">◻</span>
+          <span>Config</span>
+        </button>
+      </div>
+      <div class="sidebar-footer">
+        <div class="streak-display">
+          <span class="streak-num" id="sidebarStreak">0</span>
+          <span class="streak-label">dias seguidos</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+      <!-- ══════════ VIEW: HOJE ══════════ -->
+      <div class="view active" id="view-hoje">
+
+        <div class="view-header">
+          <div>
+            <p class="eyebrow" id="todayDate">—</p>
+            <h1>Sistema do dia</h1>
+          </div>
+          <div class="header-right">
+            <div class="score-wrap">
+              <svg class="score-svg" viewBox="0 0 60 60">
+                <circle class="score-bg" cx="30" cy="30" r="26"/>
+                <circle class="score-fill" id="scoreFill" cx="30" cy="30" r="26"
+                  stroke-dasharray="163.4" stroke-dashoffset="163.4"/>
+              </svg>
+              <div class="score-inner">
+                <span id="scoreNum">0</span>
+                <small>%</small>
+              </div>
+            </div>
+            <button class="reset-day-btn" id="resetDayBtn" title="Reiniciar dia">↺</button>
+          </div>
+        </div>
+
+        <!-- CHECK-IN RÁPIDO -->
+        <section class="card checkin-card">
+          <div class="card-label">CHECK-IN MATINAL</div>
+          <div class="checkin-grid">
+            <div class="slider-block">
+              <div class="slider-header">
+                <span>Energia</span>
+                <span class="slider-val" id="energyVal">5</span>
+              </div>
+              <input type="range" id="energySlider" min="1" max="10" value="5" step="1">
+              <div class="slider-ticks">
+                <span>baixa</span><span>alta</span>
+              </div>
+            </div>
+            <div class="slider-block">
+              <div class="slider-header">
+                <span>Foco</span>
+                <span class="slider-val" id="focusVal">5</span>
+              </div>
+              <input type="range" id="focusSlider" min="1" max="10" value="5" step="1">
+              <div class="slider-ticks">
+                <span>disperso</span><span>afiado</span>
+              </div>
+            </div>
+            <div class="slider-block">
+              <div class="slider-header">
+                <span>Humor</span>
+                <span class="slider-val" id="moodVal">5</span>
+              </div>
+              <input type="range" id="moodSlider" min="1" max="10" value="5" step="1">
+              <div class="slider-ticks">
+                <span>pesado</span><span>leve</span>
+              </div>
+            </div>
+          </div>
+          <div class="checkin-row2">
+            <select id="riskSelect" class="select-field">
+              <option value="nenhum">Risco do dia...</option>
+              <option value="alimentacao">🍔 Alimentação</option>
+              <option value="impulsos">⚡ Impulsos</option>
+              <option value="gastos">💸 Gastos</option>
+              <option value="procrastinacao">🌀 Procrastinação</option>
+              <option value="sono">😴 Sono</option>
+              <option value="treino">🏋️ Treino</option>
+            </select>
+            <input type="text" id="focusText" class="input-field" placeholder="Foco principal de hoje...">
+          </div>
+          <button class="btn-primary" id="saveCheckinBtn">Registrar check-in</button>
+        </section>
+
+        <!-- ALERTA PREDITIVO -->
+        <section class="card alert-card" id="alertCard" style="display:none">
+          <div class="card-label">NEXO PREVÊ</div>
+          <div class="alert-content" id="alertContent"></div>
+        </section>
+
+        <!-- DESPEJO MENTAL -->
+        <section class="card dump-card">
+          <div class="card-label">DESPEJO MENTAL</div>
+          <div class="dump-input-wrap">
+            <textarea id="dumpTextarea" placeholder="Despeje aqui — ideias, tarefas, impulsos, ansiedade, planos, qualquer coisa..."></textarea>
+            <button class="mic-btn" id="micBtn">🎙</button>
+          </div>
+          <div class="dump-actions">
+            <button class="btn-action" id="btnPlan">→ Plano</button>
+            <button class="btn-action secondary" id="btnRisk">⚠ Risco</button>
+            <button class="btn-action secondary" id="btnMemory">◉ Memória</button>
+            <button class="btn-action secondary" id="btnReflect">✦ Reflexão</button>
+          </div>
+          <div class="ai-status-bar" id="aiStatus" style="display:none">
+            <div class="ai-status-dot" id="aiDot"></div>
+            <span id="aiStatusText">processando...</span>
+          </div>
+          <div class="ai-response" id="aiResponse" style="display:none">
+            <div class="ai-response-label" id="aiResponseLabel">NEXO</div>
+            <div class="ai-response-text" id="aiResponseText"></div>
+            <button class="btn-save-memory" id="btnSaveToMemory" style="display:none">+ Salvar na memória</button>
+          </div>
+        </section>
+
+        <!-- INSIGHTS DO DIA -->
+        <section class="card insights-card">
+          <div class="card-label">LEITURA DO DIA</div>
+          <div class="insights-grid" id="insightsGrid"></div>
+        </section>
+
+      </div>
+
+      <!-- ══════════ VIEW: PADRÕES ══════════ -->
+      <div class="view" id="view-padroes">
+
+        <div class="view-header">
+          <div>
+            <p class="eyebrow">Últimos 30 dias</p>
+            <h1>Seus padrões</h1>
+          </div>
+        </div>
+
+        <section class="card">
+          <div class="card-label">ENERGIA, FOCO E HUMOR — LINHA DO TEMPO</div>
+          <div class="chart-wrap">
+            <canvas id="lineChart" height="180"></canvas>
+          </div>
+          <div class="chart-legend">
+            <span class="legend-dot" style="background:#00e5ff"></span><span>Energia</span>
+            <span class="legend-dot" style="background:#b388ff"></span><span>Foco</span>
+            <span class="legend-dot" style="background:#69ff47"></span><span>Humor</span>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-label">HEATMAP DE RISCO — DIA DA SEMANA</div>
+          <div id="heatmapWrap"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-label">PADRÕES DETECTADOS</div>
+          <div id="patternsGrid" class="patterns-grid"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-label">MÉDIAS DOS ÚLTIMOS 7 DIAS</div>
+          <div class="averages-grid" id="averagesGrid"></div>
+        </section>
+
+      </div>
+
+      <!-- ══════════ VIEW: MEMÓRIA ══════════ -->
+      <div class="view" id="view-memoria">
+
+        <div class="view-header">
+          <div>
+            <p class="eyebrow">Contexto histórico</p>
+            <h1>Memória viva</h1>
+          </div>
+          <button class="btn-export" id="exportObsidian">↗ Obsidian</button>
+        </div>
+
+        <section class="card">
+          <div class="card-label">APRENDIZADOS CONSOLIDADOS</div>
+          <p class="helper-text">Tudo aqui é usado como contexto pela IA em cada análise. Edite livremente.</p>
+          <textarea class="memory-textarea" id="memoryTextarea" placeholder="• Tenho padrão de gasto impulsivo às sextas&#10;• Energia cai depois das 15h&#10;• Treino em jejum funciona melhor para mim&#10;• Procrastino mais quando o risco é alimentação"></textarea>
+          <button class="btn-primary" id="saveMemoryBtn" style="margin-top:12px">Salvar memória</button>
+        </section>
+
+        <section class="card">
+          <div class="card-label">HISTÓRICO DE CHECK-INS</div>
+          <div id="historyList" class="history-list"></div>
+        </section>
+
+      </div>
+
+
+      <!-- ══════════ VIEW: CORPO ══════════ -->
+      <div class="view" id="view-corpo">
+        <div class="view-header">
+          <div>
+            <p class="eyebrow">Plano Thales · Ganho de Massa</p>
+            <h1>Corpo</h1>
+          </div>
+          <div class="corpo-stats">
+            <span class="corpo-stat"><span class="cs-val">67<small>kg</small></span><span class="cs-label">atual</span></span>
+            <span class="corpo-stat"><span class="cs-val">~75<small>kg</small></span><span class="cs-label">meta</span></span>
+          </div>
+        </div>
+        <div class="corpo-alert">⚠ Peito de pombo + lombar sensível — sem deadlift pesado. Pilates toda quinta.</div>
+        <div class="corpo-tabs">
+          <button class="corpo-tab active" data-tab="treino">Treino</button>
+          <button class="corpo-tab" data-tab="nutricao">Nutrição</button>
+          <button class="corpo-tab" data-tab="principios">Princípios</button>
+        </div>
+        <div class="corpo-panel active" id="tab-treino">
+          <div class="card">
+            <div class="card-label">SEMANA ATUAL — DIAS TREINADOS</div>
+            <div class="week-progress" id="weekProgress"></div>
+          </div>
+          <div id="trainDays"></div>
+        </div>
+        <div class="corpo-panel" id="tab-nutricao">
+          <div class="card">
+            <div class="card-label">META CALÓRICA DIÁRIA</div>
+            <div class="kcal-banner">
+              <div class="kcal-num">3.200<span>kcal</span></div>
+              <div class="kcal-desc">Ectomorfo com metabolismo rápido. Coma mesmo sem fome.<br>Sem ganho em 2 semanas → sobe para 3.500 kcal.</div>
+            </div>
+            <div class="macro-bars">
+              <div class="macro-row"><div class="macro-info"><span>Proteína</span><span class="macro-val" style="color:var(--cyan)">160–180g · 25%</span></div><div class="macro-track"><div class="macro-fill" style="width:25%;background:var(--cyan)"></div></div></div>
+              <div class="macro-row"><div class="macro-info"><span>Carboidrato</span><span class="macro-val" style="color:var(--violet)">420–460g · 55%</span></div><div class="macro-track"><div class="macro-fill" style="width:55%;background:var(--violet)"></div></div></div>
+              <div class="macro-row"><div class="macro-info"><span>Gordura</span><span class="macro-val" style="color:var(--amber)">70–80g · 20%</span></div><div class="macro-track"><div class="macro-fill" style="width:20%;background:var(--amber)"></div></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-label">REFEIÇÕES DO DIA — MARQUE O QUE FEZ</div>
+            <div id="mealsList"></div>
+          </div>
+        </div>
+        <div class="corpo-panel" id="tab-principios">
+          <div class="card">
+            <div class="card-label">6 PRINCÍPIOS DO ECTOMORFO</div>
+            <div id="principlesList"></div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ══════════ VIEW: FINANÇAS ══════════ -->
+      <div class="view" id="view-financas">
+        <div class="view-header">
+          <div>
+            <p class="eyebrow">Controle financeiro</p>
+            <h1>Finanças</h1>
+          </div>
+          <button class="btn-action secondary" id="btnFinConfig">⚙ Configurar</button>
+        </div>
+
+        <!-- SALDO PRINCIPAL -->
+        <div class="fin-hero">
+          <div class="fin-hero-label">Você ainda pode gastar</div>
+          <div class="fin-hero-value" id="finHeroValue">R$ 0</div>
+          <div class="fin-hero-sub" id="finHeroSub">do limite de R$ 0 este mês</div>
+          <div class="fin-progress-wrap">
+            <div class="fin-progress-bar">
+              <div class="fin-progress-fill" id="finProgressFill"></div>
+            </div>
+            <div class="fin-progress-labels">
+              <span id="finProgressUsed">0% usado</span>
+              <span id="finProgressLeft">R$ 276/dia disponível</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RESUMO -->
+        <div class="fin-summary">
+          <div class="fin-summary-item">
+            <div class="fsi-bar" style="background:var(--green)"></div>
+            <div>
+              <div class="fsi-label">Receitas</div>
+              <div class="fsi-value" id="finReceitas">R$ 0</div>
+            </div>
+          </div>
+          <div class="fin-summary-item">
+            <div class="fsi-bar" style="background:var(--coral)"></div>
+            <div>
+              <div class="fsi-label">Despesas</div>
+              <div class="fsi-value" id="finDespesas">R$ 0</div>
+            </div>
+          </div>
+          <div class="fin-summary-item">
+            <div class="fsi-bar" style="background:var(--cyan)"></div>
+            <div>
+              <div class="fsi-label">Resultado</div>
+              <div class="fsi-value" id="finResultado">R$ 0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LANÇAMENTO RÁPIDO -->
+        <div class="card">
+          <div class="card-label">LANÇAMENTO RÁPIDO</div>
+          <div class="fin-launch-form">
+            <input type="text" class="input-field" id="finDesc" placeholder="Descrição...">
+            <input type="number" class="input-field" id="finValue" placeholder="R$ 0,00" step="0.01">
+            <select class="select-field" id="finCat">
+              <option value="">Categoria...</option>
+            </select>
+            <div class="fin-launch-btns">
+              <button class="btn-action" id="btnAddReceita" style="color:var(--green);border-color:rgba(105,255,71,0.3)">+ Receita</button>
+              <button class="btn-action" id="btnAddDespesa" style="color:var(--coral);border-color:rgba(255,107,87,0.3)">− Despesa</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTAS A PAGAR -->
+        <div class="card">
+          <div class="card-label">CONTAS A PAGAR</div>
+          <div id="finContasList" class="fin-contas-list"></div>
+          <button class="btn-action secondary" id="btnAddConta" style="margin-top:12px;width:100%">+ Adicionar conta</button>
+        </div>
+
+        <!-- LIMITES POR CATEGORIA -->
+        <div class="card">
+          <div class="card-label">LIMITES POR CATEGORIA</div>
+          <div id="finCategoriasList" class="fin-categorias-list"></div>
+        </div>
+
+        <!-- HISTÓRICO -->
+        <div class="card">
+          <div class="card-label">HISTÓRICO DO MÊS</div>
+          <div id="finHistorico" class="fin-historico"></div>
+        </div>
+      </div>
+
+      <!-- MODAL FINANÇAS CONFIG -->
+      <div class="fin-modal" id="finModal" style="display:none">
+        <div class="fin-modal-box">
+          <div class="fin-modal-head">
+            <h3>Configurar Finanças</h3>
+            <button class="fin-modal-close" id="finModalClose">✕</button>
+          </div>
+          <div class="fin-modal-body">
+            <label class="field-label">Limite mensal (R$)</label>
+            <input type="number" class="input-field" id="finLimiteInput" placeholder="8000">
+
+            <label class="field-label" style="margin-top:16px">Categorias e limites</label>
+            <div id="finCategoriasConfig"></div>
+            <button class="btn-action secondary" id="btnAddCategoria" style="margin-top:10px;width:100%">+ Nova categoria</button>
+
+            <label class="field-label" style="margin-top:16px">Contas a pagar</label>
+            <div id="finContasConfig"></div>
+            <button class="btn-action secondary" id="btnAddContaConfig" style="margin-top:10px;width:100%">+ Nova conta</button>
+
+            <button class="btn-primary" id="finSaveConfig" style="margin-top:20px">Salvar configurações</button>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ══════════ VIEW: MENTE ══════════ -->
+      <div class="view" id="view-mente">
+        <div class="view-header">
+          <div>
+            <p class="eyebrow">Segundo Cérebro · Zettelkasten</p>
+            <h1>Mente</h1>
+          </div>
+          <button class="btn-export" id="btnExportMente">↗ Obsidian</button>
+        </div>
+
+        <!-- FLUXO -->
+        <div class="mente-flow">
+          <div class="mf-step active" data-step="rough">
+            <span class="mf-num">1</span>
+            <span class="mf-label">Rough</span>
+          </div>
+          <div class="mf-arrow">→</div>
+          <div class="mf-step" data-step="source">
+            <span class="mf-num">2</span>
+            <span class="mf-label">Source</span>
+          </div>
+          <div class="mf-arrow">→</div>
+          <div class="mf-step" data-step="full">
+            <span class="mf-num">3</span>
+            <span class="mf-label">Full Note</span>
+          </div>
+        </div>
+
+        <!-- PAINEL ROUGH -->
+        <div class="mente-panel active" id="mpanel-rough">
+          <div class="card">
+            <div class="card-label">ROUGH NOTE — DESPEJO BRUTO</div>
+            <p class="helper-text" style="margin-bottom:10px">Capture sem filtro. A mente é um processador, não um disco rígido.</p>
+            <textarea class="mente-textarea" id="roughTextarea" placeholder="Escreva qualquer coisa — ideia solta, trecho lido, insight, pergunta..."></textarea>
+            <div class="mente-actions">
+              <button class="btn-action" id="btnRefinaIA">✦ Refinar com IA</button>
+              <button class="btn-action secondary" id="btnSalvaRough">Salvar Rough</button>
+            </div>
+            <div class="ai-response" id="roughAiResponse" style="display:none">
+              <div class="ai-response-label">NEXO REFINOU</div>
+              <div class="ai-response-text" id="roughAiText"></div>
+              <button class="btn-save-memory" id="btnRoughToFull">→ Mover para Full Note</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-label">ROUGH NOTES SALVAS</div>
+            <div id="roughList" class="mente-list"></div>
+          </div>
+        </div>
+
+        <!-- PAINEL SOURCE -->
+        <div class="mente-panel" id="mpanel-source">
+          <div class="card">
+            <div class="card-label">SOURCE MATERIAL — FONTES BRUTAS</div>
+            <p class="helper-text" style="margin-bottom:10px">Cole links, trechos, PDFs, referências. Dados brutos intactos.</p>
+            <input type="text" class="input-field" id="sourceTitle" placeholder="Título da fonte..." style="margin-bottom:8px">
+            <textarea class="mente-textarea" id="sourceTextarea" placeholder="Cole o conteúdo bruto aqui — trecho de artigo, link, código..."></textarea>
+            <input type="text" class="input-field" id="sourceUrl" placeholder="URL / referência (opcional)" style="margin-top:8px">
+            <div class="mente-actions">
+              <button class="btn-action" id="btnSalvaSource">Salvar Source</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-label">SOURCE MATERIAL SALVO</div>
+            <div id="sourceList" class="mente-list"></div>
+          </div>
+        </div>
+
+        <!-- PAINEL FULL NOTE -->
+        <div class="mente-panel" id="mpanel-full">
+          <div class="card">
+            <div class="card-label">FULL NOTE — CONHECIMENTO CRISTALIZADO</div>
+            <p class="helper-text" style="margin-bottom:10px">Escreva com suas próprias palavras. Uma ideia por nota. Simples o suficiente para um leigo entender.</p>
+            <input type="text" class="input-field" id="fullTitle" placeholder="Título da nota..." style="margin-bottom:8px">
+            <select class="select-field" id="fullStatus" style="margin-bottom:8px">
+              <option value="draft">Draft</option>
+              <option value="developing">Developing</option>
+              <option value="developed">Developed</option>
+            </select>
+            <textarea class="mente-textarea tall" id="fullTextarea" placeholder="Escreva nas suas próprias palavras. Máximo uma tela. Um raciocínio singular e completo."></textarea>
+            <div class="tags-wrap">
+              <input type="text" class="input-field" id="tagsInput" placeholder="Tags (vírgula para separar)..." style="margin-bottom:8px">
+              <button class="btn-action secondary" id="btnSuggestTags">✦ Sugerir tags com IA</button>
+            </div>
+            <div id="tagsSuggested" style="display:none;margin:8px 0"></div>
+            <div class="mente-actions">
+              <button class="btn-action" id="btnSalvaFull">Salvar Full Note</button>
+              <button class="btn-action secondary" id="btnExportFull">↗ Exportar Obsidian</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-label">FULL NOTES SALVAS</div>
+            <div id="fullList" class="mente-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════ VIEW: INVESTIMENTOS ══════════ -->
+      <div class="view" id="view-investimentos">
+
+        <div class="view-header">
+          <div>
+            <p class="eyebrow">Banca do Thales · R$ 200/mês</p>
+            <h1>Investimentos</h1>
+          </div>
+          <div class="invest-badge">Perfil Moderado</div>
+        </div>
+
+        <!-- AÇÃO PRINCIPAL -->
+        <div class="card invest-main-card">
+          <div class="card-label">ANÁLISE DE MERCADO</div>
+          <p class="helper-text" style="margin-bottom:14px">
+            Receba uma análise completa: renda fixa, bolsa, cripto, DeFi e alavancagem digital — tudo adaptado para R$ 200.
+          </p>
+          <button class="btn-invest-primary" id="btnAnaliseHoje">
+            <span class="btn-invest-icon">◈</span>
+            Análise de Hoje
+          </button>
+        </div>
+
+        <!-- PERGUNTA LIVRE -->
+        <div class="card">
+          <div class="card-label">PERGUNTA LIVRE</div>
+          <p class="helper-text" style="margin-bottom:10px">Pergunte qualquer coisa sobre investimentos, cripto, renda, monetização...</p>
+          <div class="invest-input-wrap">
+            <textarea id="investPergunta" class="mente-textarea" placeholder="Ex: Vale a pena comprar BTC agora? Qual FII tem melhor DY? Como monetizar no X com pouco seguidor?&#10;&#10;Enter para enviar, Shift+Enter para nova linha." style="min-height:80px"></textarea>
+          </div>
+          <button class="btn-action" id="btnPerguntaInvest" style="margin-top:10px">→ Perguntar</button>
+        </div>
+
+        <!-- RESPOSTA IA -->
+        <div class="card invest-response" id="investResponse" style="display:none">
+          <div class="ai-status-bar" id="investStatus">
+            <div class="ai-status-dot"></div>
+            <span id="investStatusText">analisando...</span>
+          </div>
+          <div class="ai-response-label" id="investResponseLabel">NEXO INVEST</div>
+          <div class="ai-response-text invest-response-text" id="investResponseText"></div>
+        </div>
+
+        <!-- HISTÓRICO -->
+        <div class="card">
+          <div class="card-label">ANÁLISES ANTERIORES</div>
+          <div id="investHistoricoList" class="invest-historico-list"></div>
+        </div>
+
+        <!-- AVISO -->
+        <div class="card invest-disclaimer">
+          <div class="card-label">AVISO IMPORTANTE</div>
+          <p class="helper-text" style="line-height:1.7">
+            Esta análise usa IA com base em conhecimento de treinamento — <strong>não garante dados em tempo real</strong>.<br>
+            Confirme preços e notícias em fontes como <span style="color:var(--amber)">InfoMoney, CoinMarketCap, TradingView</span> antes de investir.<br>
+            Não é recomendação de investimento. Invista somente o que pode perder.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- ══════════ VIEW: CONFIG ══════════ -->
+      <div class="view" id="view-config">
+
+        <div class="view-header">
+          <div>
+            <p class="eyebrow">Preferências</p>
+            <h1>Configurações</h1>
+          </div>
+        </div>
+
+        <section class="card">
+          <div class="card-label">IDENTIDADE</div>
+          <label class="field-label">Seu nome (para personalização)</label>
+          <input type="text" id="userName" class="input-field" placeholder="Como quer ser chamado?">
+        </section>
+
+        <section class="card">
+          <div class="card-label">OBSIDIAN VAULT</div>
+          <label class="field-label">Nome exato do Vault</label>
+          <input type="text" id="vaultNameInput" class="input-field" placeholder="MeuVault">
+          <label class="field-label" style="margin-top:12px">Pasta dentro do Vault</label>
+          <input type="text" id="vaultFolder" class="input-field" placeholder="Nexo">
+        </section>
+
+        <section class="card">
+          <div class="card-label">DADOS</div>
+          <div class="config-actions">
+            <button class="btn-action secondary" id="exportJsonBtn">↓ Exportar JSON</button>
+            <button class="btn-danger" id="nukeBtn">⚠ Apagar tudo</button>
+          </div>
+          <p class="helper-text" style="margin-top:10px">O export JSON salva todo seu histórico para backup ou importação futura.</p>
+        </section>
+
+        <section class="card">
+          <div class="card-label">SOBRE O NEXO 2.0</div>
+          <p class="helper-text" style="line-height:1.8">
+            Sistema operacional pessoal. Roda 100% local no seu navegador.<br>
+            IA usada apenas quando você solicita uma análise.<br>
+            Dados armazenados no localStorage do seu dispositivo.<br>
+            Exportação para Obsidian em markdown.<br>
+            <br>
+            Custo estimado de IA: &lt; R$3/mês com uso diário.
+          </p>
+        </section>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- CONFIRM DIALOG -->
+  <div class="overlay" id="overlay" style="display:none">
+    <div class="dialog">
+      <h3 id="dialogTitle">Confirmar</h3>
+      <p id="dialogMsg"></p>
+      <div class="dialog-btns">
+        <button class="btn-action secondary" id="dialogCancel">Cancelar</button>
+        <button class="btn-danger" id="dialogConfirm">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <script src="app.js" defer></script>
+  <script src="corpo.js" defer></script>
+  <script src="financas.js" defer></script>
+  <script src="mente.js" defer></script>
+  <script src="investimentos.js" defer></script>
+</body>
+</html>
